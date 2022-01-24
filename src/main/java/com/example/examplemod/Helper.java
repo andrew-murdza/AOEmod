@@ -49,7 +49,4 @@ public class Helper {
         RANDOM,
         CHANCE
     }
-    public void githubChange(){
-
-    }
 }

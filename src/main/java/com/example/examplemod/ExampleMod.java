@@ -1,5 +1,6 @@
 package com.example.examplemod;
 
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;

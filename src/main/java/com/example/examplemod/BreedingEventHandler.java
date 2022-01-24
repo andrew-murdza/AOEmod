@@ -20,8 +20,7 @@ public class BreedingEventHandler {
         ServerLevel world= (ServerLevel) parentA.getLevel();
         if(Helper.chance(new int[]{0,0,8,3,1},score)){
             AgeableMob secondChild= parentA.getBreedOffspring(world, parentB);
-            BlockPos pos=parentA.getOnPos();
-            secondChild.moveTo(pos.getX(),pos.getY(),pos.getZ(),0.0F,1.0F);
+            secondChild.moveTo(parentA.getX(),parentA.getY(),parentA.getZ(),0.0F,0.0F);
             secondChild.setBaby(true);
             world.addFreshEntity(secondChild);
         }
