@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "features": [
+      {
+        "chance": 0.5,
+        "feature": "minecraft:red_mushroom_normal"
+      },
+      {
+        "chance": 0.5,
+        "feature": "minecraft:brown_mushroom_normal"
+      }
+    ],
+    "default": "minecraft:grass_bonemeal"
+  }
+}
