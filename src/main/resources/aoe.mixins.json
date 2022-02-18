@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "com.example.examplemod.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "aoe.refmap.json",
+  "mixins": [
+    "BambooSaplingMixin",
+    "BeeAngerMixin",
+    "BiomeColorsMixin",
+    "BoneMealMixin",
+    "BuddingAmethystMixin",
+    "CactusMixin",
+    "CaveVineHeadMixin",
+    "CaveVineLightMixin",
+    "CaveVinePlantMixin",
+    "ChorusFlowerMixin",
+    "EatBlockGoalMixin",
+    "FarmlandMixin",
+    "GlowLichenMixin",
+    "GrowingPlantBlockMixin",
+    "HoglinZombificationMixin",
+    "MushroomMixin",
+    "MyceliumMixin",
+    "NyliumMixin",
+    "PiglinZombificationMixin",
+    "PointedDripstoneMixin",
+    "SaplingMixin",
+    "SeaPickleMixin",
+    "SporeBlossomMixin",
+    "SpreadableBlockMixin",
+    "SweetBerriesMixin"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}

@@ -19,7 +19,9 @@ public class BreedingEventHandler {
         int score=BiomeScores.getScoreEntity(parentA);
         ServerLevel world= (ServerLevel) parentA.getLevel();
         if(Helper.chance(new int[]{0,0,8,3,1},score)){
+            event.getChild().addTag("aoe.bred");
             AgeableMob secondChild= parentA.getBreedOffspring(world, parentB);
+            secondChild.addTag("aoe.bred");
             secondChild.moveTo(parentA.getX(),parentA.getY(),parentA.getZ(),0.0F,0.0F);
             secondChild.setBaby(true);
             world.addFreshEntity(secondChild);

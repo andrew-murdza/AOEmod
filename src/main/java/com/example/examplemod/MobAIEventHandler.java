@@ -1,18 +1,18 @@
 package com.example.examplemod;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.horse.*;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,36 +25,88 @@ public class MobAIEventHandler {
 
     @SubscribeEvent
     public static void AIChanges(EntityJoinWorldEvent event){
-        Entity entity=event.getEntity();
-        if(entity instanceof Wolf){
-            removeAI(p->p instanceof NonTameRandomTargetGoal, (Mob) entity);
+        try{
+            Entity entity=event.getEntity();
+
+            if(!event.getWorld().isClientSide&&entity instanceof PathfinderMob) {
+                PathfinderMob mob = (PathfinderMob) entity;
+                if(mob.getTags().contains("aoe.checkedAI")){
+                    return;
+                }
+                mob.addTag("aoe.checkedAI");
+
+                if (entity instanceof Wolf) {
+                    removeAI(mob, NonTameRandomTargetGoal.class);
+                } else if (entity instanceof Fox) {
+                    removeAI(mob, Fox.FoxEatBerriesGoal.class, AvoidEntityGoal.class, NearestAttackableTargetGoal.class);
+                } else if (entity instanceof Ocelot) {
+                    removeAI(mob, NearestAttackableTargetGoal.class);//,Ocelot.OcelotTemptGoal.class);
+                    addTempt(mob, Items.SALMON, Items.COD, Items.TROPICAL_FISH);
+                }
+                //Goat Ramming requires brain
+                //Axotol hunting passive fish uses brain
+                //Piglin brute not attacking players with gold armor requires brain
+                else if (entity instanceof Rabbit) {
+                    removeAI(mob,Class.forName("net.minecraft.world.entity.animal.Rabbit$RabbitAvoidEntityGoal"));
+                    removeAI(mob,Class.forName("net.minecraft.world.entity.animal.Rabbit$RaidGardenGoal"));
+                    List<Item> flowers = new ArrayList<>(ItemTags.SMALL_FLOWERS.getValues());
+                    flowers.remove(Items.WITHER_ROSE);
+                    addTempt(mob, flowers.toArray(new Item[0]));
+                } else if (entity instanceof Horse || entity instanceof AbstractChestedHorse) {
+                    addTempt(mob, Items.HAY_BLOCK);
+                } else if (entity instanceof Cat) {
+                    removeAI(mob, NonTameRandomTargetGoal.class);
+                    addTempt(mob, Items.SALMON, Items.COD, Items.TROPICAL_FISH);
+                } else if (entity instanceof PolarBear) {
+                    //breeding needed
+                    removeAI(mob, NearestAttackableTargetGoal.class);
+                    removeAI(mob,Class.forName("net.minecraft.world.entity.animal.PolarBear$PolarBearAttackPlayersGoal"));
+                    addBreeding(mob);
+                    addTempt(mob, Items.MUTTON, Items.BEEF, Items.COD, Items.SALMON);
+                } else if (entity instanceof Parrot) {
+                    addTempt(1, mob, Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.APPLE);
+                    addBreeding(0, mob);
+                }
+                //parrot breeding
+                else if (entity instanceof MushroomCow) {
+                    addTempt(mob, Items.BROWN_MUSHROOM, Items.RED_MUSHROOM);
+                } else if (entity instanceof AbstractSkeleton || entity instanceof Zombie) {
+                    NearestAttackableTargetGoal<Turtle> babyTurtleAttack = new NearestAttackableTargetGoal<>(mob, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR);
+                    removeAI(p -> p.equals(babyTurtleAttack), mob);
+                } else if (entity instanceof Zombie) {
+                    removeAI(mob, Class.forName("net.minecraft.world.entity.monster.Zombie$ZombieAttackTurtleEggGoal"));
+                }
+            }
         }
-        if(entity instanceof Fox){
-            removeAI(new Class[]{Fox.FoxEatBerriesGoal.class,Fox.FoxEatBerriesGoal.class,AvoidEntityGoal.class},(Mob) entity);
-        }
-        if(entity instanceof Ocelot){
-            removeAI(NearestAttackableTargetGoal.class,(Mob) entity);
-        }
-        //Goat Ramming
-        if(entity instanceof Rabbit){
-            removeAI(new Class[]{Rabbit.RabbitAvoidEntityGoal.class,Rabbit.RaidGardenGoal.class},(Mob)entity);
-        }
-        if(entity instanceof Cat){
-            removeAI(p->p instanceof NonTameRandomTargetGoal, (Mob) entity);
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
-    private static void removeAI(Predicate<Goal> shouldRemove, Mob mob){
+
+    private static void addBreeding(PathfinderMob mob) {
+        addBreeding(2,mob);
+    }
+
+    private static void addBreeding(int priority,PathfinderMob mob) {
+        mob.goalSelector.addGoal(priority, new BreedGoal((Animal) mob, 1.0D));
+    }
+
+    private static void removeAI(Predicate<Goal> shouldRemove, PathfinderMob mob){
         removeAI(shouldRemove,mob.goalSelector);
         removeAI(shouldRemove,mob.targetSelector);
     }
 
-    private static void removeAI(Class aiClass, Mob mob){
-        removeAI(p->p.getClass()==aiClass,mob);
+    private static void addTempt(PathfinderMob mob, Item... items){
+        addTempt(3,mob,items);
+    }
+    private static void addTempt(int priority,PathfinderMob mob, Item... items){
+        mob.goalSelector.addGoal(priority, new TemptGoal(mob, 1.0D, Ingredient.of(items), false));
     }
 
-    private static void removeAI(Class[] classes, Mob mob){
+
+    private static void removeAI(PathfinderMob mob,Class... classes){
         for(Class class1:classes){
-            removeAI(class1,mob);
+            removeAI(p->p.getClass()==class1,mob);
         }
     }
 

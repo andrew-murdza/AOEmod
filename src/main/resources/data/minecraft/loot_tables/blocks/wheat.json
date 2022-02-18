@@ -8,68 +8,86 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_4",
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_4",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biome": "minecraft:jungle"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_3",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biome": "minecraft:savanna"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_2",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biome": "minecraft:plains"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_1",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biome": "minecraft:frozen_peaks"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_0",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:reference",
+                      "name": "minecraft:desert_civ_biome"
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "aoemod:blocks/wheat_2"
+                }
+              ],
               "conditions": [
                 {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biome": "minecraft:jungle"
+                  "condition": "minecraft:block_state_property",
+                  "block": "minecraft:wheat",
+                  "properties": {
+                    "age": "7"
                   }
                 }
               ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_3",
-              "conditions": [
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biome": "minecraft:savanna"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_2",
-              "conditions": [
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biome": "minecraft:plains"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_1",
-              "conditions": [
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biome": "minecraft:frozen_peaks"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_0",
-              "conditions": [
-                {
-                  "condition": "minecraft:reference",
-                  "name": "minecraft:desert_civ_biome"
-                }
-              ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "aoemod:blocks/wheat_2"
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat_seeds"
         }
       ]
     }

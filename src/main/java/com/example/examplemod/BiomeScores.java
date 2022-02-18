@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.monster.Enemy;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class BiomeScores {
@@ -29,6 +31,7 @@ public class BiomeScores {
     public static HashMap<Biome.BiomeCategory, Integer>monsterScores=new HashMap<>();
     public static HashMap<Biome.BiomeCategory, Integer>netherScores=new HashMap<>();
     public static HashMap<Biome.BiomeCategory, Integer>endScores=new HashMap<>();
+    public static HashMap<Biome.BiomeCategory, Integer>flowerScores=new HashMap<>();
     static{
         cropScores.put(Biome.BiomeCategory.OCEAN,4);
         cropScores.put(Biome.BiomeCategory.JUNGLE,4);
@@ -111,6 +114,14 @@ public class BiomeScores {
         ANIMAL_SCORES_MAP.put(Biome.BiomeCategory.DESERT,0);
         ANIMAL_SCORES_MAP.put(Biome.BiomeCategory.MESA,0);
 
+        flowerScores.put(Biome.BiomeCategory.OCEAN,4);
+        flowerScores.put(Biome.BiomeCategory.JUNGLE,4);
+        flowerScores.put(Biome.BiomeCategory.SAVANNA,3);
+        flowerScores.put(Biome.BiomeCategory.PLAINS,3);
+        flowerScores.put(Biome.BiomeCategory.MOUNTAIN,1);
+        flowerScores.put(Biome.BiomeCategory.DESERT,0);
+        flowerScores.put(Biome.BiomeCategory.MESA,0);
+
         MUSHROOM_SCORES_MAP.put(Biome.BiomeCategory.OCEAN,4);
         MUSHROOM_SCORES_MAP.put(Biome.BiomeCategory.JUNGLE,4);
         MUSHROOM_SCORES_MAP.put(Biome.BiomeCategory.SAVANNA,1);
@@ -158,18 +169,27 @@ public class BiomeScores {
 
         Block[] cropBlocks=new Block[]{Blocks.WHEAT,Blocks.CARROTS,Blocks.POTATOES,Blocks.BEETROOTS};
         Block[] stemCropBlocks=new Block[]{Blocks.PUMPKIN_STEM,Blocks.MELON_STEM,Blocks.ATTACHED_MELON_STEM,Blocks.ATTACHED_PUMPKIN_STEM};
-        Block[] waterBlocks=new Block[]{Blocks.KELP,Blocks.SEAGRASS,Blocks.TALL_SEAGRASS,Blocks.TURTLE_EGG};
+        Block[] waterBlocks=new Block[]{Blocks.KELP,Blocks.SEAGRASS,Blocks.TALL_SEAGRASS,Blocks.TURTLE_EGG,Blocks.SEAGRASS,
+                Blocks.DRIED_KELP_BLOCK,Blocks.KELP_PLANT,Blocks.WET_SPONGE,Blocks.SEA_PICKLE};//Add corals
         Block[] plantBlocks=new Block[]{Blocks.BAMBOO,Blocks.BAMBOO_SAPLING,Blocks.SUGAR_CANE,Blocks.COCOA,Blocks.SWEET_BERRY_BUSH,Blocks.CAVE_VINES
-                ,Blocks.CAVE_VINES_PLANT,Blocks.VINE,Blocks.GRASS,Blocks.FERN,Blocks.TALL_GRASS,Blocks.LARGE_FERN,Blocks.GRASS_BLOCK,Blocks.GLOW_LICHEN};
+                ,Blocks.CAVE_VINES_PLANT,Blocks.VINE,Blocks.GRASS,Blocks.FERN,Blocks.TALL_GRASS,Blocks.LARGE_FERN,Blocks.GRASS_BLOCK,Blocks.GLOW_LICHEN,
+                Blocks.MOSS_BLOCK,Blocks.GRASS_BLOCK,Blocks.GRASS_BLOCK,Blocks.AZALEA,Blocks.AZALEA_LEAVES,
+                Blocks.FLOWERING_AZALEA_LEAVES,Blocks.FLOWERING_AZALEA,Blocks.SMALL_DRIPLEAF,Blocks.BIG_DRIPLEAF,Blocks.BIG_DRIPLEAF_STEM,
+        Blocks.BIG_DRIPLEAF,Blocks.BIG_DRIPLEAF_STEM,Blocks.SMALL_DRIPLEAF,Blocks.ROOTED_DIRT};
+        Block[] flowerBlocks=new Block[]{Blocks.ALLIUM,Blocks.WHITE_TULIP,Blocks.RED_TULIP,Blocks.ORANGE_TULIP,Blocks.WHITE_TULIP,
+                Blocks.AZURE_BLUET,Blocks.BLUE_ORCHID,Blocks.CORNFLOWER,Blocks.LILY_OF_THE_VALLEY,
+        Blocks.OXEYE_DAISY,Blocks.POPPY, Blocks.DANDELION,Blocks.OXEYE_DAISY,Blocks.ROSE_BUSH,Blocks.SUNFLOWER,Blocks.LILAC,Blocks.PEONY};//More later
         Block[] treeBlocks=new Block[]{Blocks.ACACIA_LEAVES,Blocks.BIRCH_LEAVES,Blocks.DARK_OAK_LEAVES,
                 Blocks.JUNGLE_LEAVES,Blocks.OAK_LEAVES,Blocks.SPRUCE_LEAVES,Blocks.AZALEA_LEAVES,Blocks.FLOWERING_AZALEA_LEAVES,Blocks.SPRUCE_SAPLING
                 ,Blocks.JUNGLE_SAPLING,Blocks.DARK_OAK_SAPLING,Blocks.BIRCH_SAPLING,Blocks.ACACIA_SAPLING,Blocks.OAK_SAPLING};
-        Block[] mushroomBlocks=new Block[]{Blocks.BROWN_MUSHROOM,Blocks.RED_MUSHROOM,Blocks.MYCELIUM};
+        Block[] mushroomBlocks=new Block[]{Blocks.BROWN_MUSHROOM,Blocks.RED_MUSHROOM,Blocks.MYCELIUM,Blocks.PODZOL,
+                Blocks.MUSHROOM_STEM,Blocks.RED_MUSHROOM_BLOCK,Blocks.BROWN_MUSHROOM_BLOCK};
         Block[] mineralBlocks=new Block[]{Blocks.COAL_ORE,Blocks.IRON_ORE,Blocks.DEEPSLATE_COAL_ORE,Blocks.DEEPSLATE_IRON_ORE,Blocks.COPPER_ORE,
                 Blocks.DEEPSLATE_COPPER_ORE,Blocks.BUDDING_AMETHYST,Blocks.AMETHYST_CLUSTER,Blocks.POINTED_DRIPSTONE,
-                Blocks.STONE,Blocks.GRAVEL,Blocks.DIRT,Blocks.CLAY,Blocks.COBBLESTONE,Blocks.OBSIDIAN,Blocks.DEEPSLATE,Blocks.TUFF};//Obsidian
-        Block[] mountainBlocks=new Block[]{Blocks.EMERALD_ORE,Blocks.DEEPSLATE_EMERALD_ORE,Blocks.DIAMOND_ORE,Blocks.DEEPSLATE_DIAMOND_ORE
-                ,Blocks.LAPIS_ORE,Blocks.DEEPSLATE_LAPIS_ORE};
+                Blocks.STONE,Blocks.GRAVEL,Blocks.DIRT,Blocks.CLAY,Blocks.COBBLESTONE,Blocks.OBSIDIAN,Blocks.DEEPSLATE,Blocks.TUFF,
+                Blocks.EMERALD_ORE,Blocks.DEEPSLATE_EMERALD_ORE,Blocks.DIAMOND_ORE,Blocks.DEEPSLATE_DIAMOND_ORE,Blocks.LAPIS_ORE,Blocks.DEEPSLATE_LAPIS_ORE};//Obsidian
+        Block[] mountainBlocks=new Block[]{Blocks.EMERALD_ORE,Blocks.DEEPSLATE_EMERALD_ORE,Blocks.DIAMOND_ORE,Blocks.DEEPSLATE_DIAMOND_ORE,
+                Blocks.LAPIS_ORE,Blocks.DEEPSLATE_LAPIS_ORE,Blocks.ICE,Blocks.BLUE_ICE,Blocks.PACKED_ICE,Blocks.SNOW,Blocks.SNOW_BLOCK,Blocks.POWDER_SNOW};
         Block[] desertBlocks=new Block[]{Blocks.REDSTONE_ORE,Blocks.DEEPSLATE_REDSTONE_ORE,Blocks.GOLD_ORE,Blocks.DEEPSLATE_GOLD_ORE,
                 Blocks.SANDSTONE,Blocks.RED_SAND,Blocks.RED_SANDSTONE,Blocks.TERRACOTTA,Blocks.BLACK_TERRACOTTA,Blocks.BLUE_TERRACOTTA
                 ,Blocks.BROWN_TERRACOTTA,Blocks.CYAN_TERRACOTTA,Blocks.GRAY_TERRACOTTA,Blocks.GREEN_TERRACOTTA,
@@ -179,7 +199,7 @@ public class BiomeScores {
         Block[] netherBlocks=new Block[]{Blocks.TWISTING_VINES,Blocks.WEEPING_VINES, Blocks.NETHER_WART,Blocks.NETHER_GOLD_ORE,Blocks.NETHER_QUARTZ_ORE,
                 Blocks.NETHERRACK,Blocks.GLOWSTONE, Blocks.MAGMA_BLOCK,Blocks.SOUL_SAND,Blocks.SOUL_SOIL,
                 Blocks.ANCIENT_DEBRIS,Blocks.GILDED_BLACKSTONE,Blocks.CRYING_OBSIDIAN};//Ancient Debris
-        Block[] cactusBlocks=new Block[]{Blocks.CACTUS,Blocks.DEAD_BUSH,Blocks.SAND};
+        Block[] cactusBlocks=new Block[]{Blocks.CACTUS,Blocks.DEAD_BUSH};
         Block[] endBlocks=new Block[]{Blocks.CHORUS_FLOWER,Blocks.CHORUS_PLANT};
         //,Blocks.ACACIA_SAPLING,
         //Blocks.BIRCH_SAPLING,Blocks.DARK_OAK_SAPLING,Blocks.JUNGLE_SAPLING,
@@ -220,9 +240,18 @@ public class BiomeScores {
         for(Block block: endBlocks){
             BIOME_SCORES_MAP.put(block,endScores);
         }
+        for(Block block: flowerBlocks){
+            BIOME_SCORES_MAP.put(block,flowerScores);
+        }
     }
-    public static int getScoreEntity(Entity entity){
-        Biome.BiomeCategory category=getCategory(entity.level,entity.getOnPos());
+
+    public static Integer getAnimalScore(LevelAccessor world, BlockPos pos){
+        Integer score=ANIMAL_SCORES_MAP.get(world.getBiome(pos).getBiomeCategory());
+        return score==null?1:score;
+    }
+
+    public static int getScoreEntity(Mob entity){
+        Biome.BiomeCategory category=getCategory(entity.level,Helper.pos(entity));
         int score=1;
         if(entity instanceof Animal &&ANIMAL_SCORES_MAP.containsKey(category)){
             score = ANIMAL_SCORES_MAP.get(category);
@@ -251,5 +280,17 @@ public class BiomeScores {
     }
     private static Biome.BiomeCategory getCategory(LevelAccessor world, BlockPos pos){
         return world.getBiome(pos).getBiomeCategory();
+    }
+    public static boolean isTropical(LevelAccessor world, BlockPos pos){
+        return isType(world,pos,Biome.BiomeCategory.JUNGLE,Biome.BiomeCategory.OCEAN,Biome.BiomeCategory.MUSHROOM);
+    }
+    public static boolean isTropical(Biome.BiomeCategory category){
+        return Helper.contains(category, Biome.BiomeCategory.JUNGLE, Biome.BiomeCategory.OCEAN, Biome.BiomeCategory.MUSHROOM);
+    }
+    public static boolean isMountains(LevelAccessor world, BlockPos pos){
+        return isType(world,pos,Biome.BiomeCategory.MOUNTAIN,Biome.BiomeCategory.ICY,Biome.BiomeCategory.TAIGA);
+    }
+    public static boolean isType(LevelAccessor world, BlockPos pos,Biome.BiomeCategory... categories){
+        return Arrays.asList(categories).contains(getCategory(world,pos));
     }
 }

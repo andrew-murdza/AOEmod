@@ -58,14 +58,21 @@ public class BlockGrowthEventHandler {
         if(state.is(Blocks.NETHER_WART)){
             growthCutoffFull(event,4,score);
         }
-        if(state.is(Blocks.WEEPING_VINES)||state.is(Blocks.TWISTING_VINES)){
-            checkGrowth(event,new int[]{0,0,10,4,2},score);
+        BlockState aboveBlock=world.getBlockState(pos.above());
+        BlockState belowBlock=world.getBlockState(pos.below());
+        int aboveScore=BiomeScores.getScoreBlock(world,pos,aboveBlock.getBlock());
+        int belowScore=BiomeScores.getScoreBlock(world,pos,belowBlock.getBlock());
+        if(aboveBlock.is(Blocks.WEEPING_VINES)){
+            checkGrowth(event,new int[]{0,0,10,4,2},aboveScore);
         }
-        if(state.is(Blocks.CAVE_VINES)){
-            growthCutoffFull(event,4,score);
+        if (belowBlock.is(Blocks.TWISTING_VINES)) {
+            checkGrowth(event,new int[]{0,0,10,4,2},belowScore);
         }
-        if(state.is(Blocks.KELP)){
-            checkGrowth(event,new int[]{0,30,10,4,2},score);
+        if(aboveBlock.is(Blocks.CAVE_VINES)){
+            growthCutoffFull(event,4,aboveScore);
+        }
+        if(belowBlock.is(Blocks.KELP)){
+            checkGrowth(event,new int[]{0,30,10,4,2},belowScore);
         }
     }
 
@@ -75,6 +82,9 @@ public class BlockGrowthEventHandler {
         LevelAccessor world = event.getWorld();
         BlockPos pos=event.getPos();
         int score=BiomeScores.getScoreBlock(world,pos,state.getBlock());
+        if(Helper.cancelBlock(state.getBlock(),score)){
+            event.setResult(Event.Result.DENY);
+        }
         if(state.is(Blocks.CACTUS)||state.is(Blocks.SUGAR_CANE)){
             addGrowth(event,new int[]{0,0,3,2,1},new int[]{0,0,1,1,1},score,p->Helper.cycleAge(p,BlockStateProperties.AGE_15));
         }
@@ -85,12 +95,13 @@ public class BlockGrowthEventHandler {
 
     private static void checkGrowth(BlockEvent.CropGrowEvent event, int[] chances, int score){
         event.setResult(Helper.chance(chances,score)? Event.Result.ALLOW: Event.Result.DENY);
+        System.out.println(event.getResult());
     }
     private static void growthCutoff(BlockEvent.CropGrowEvent event, int cutoff, int score){
-        event.setResult(cutoff<score? Event.Result.DENY: Event.Result.DEFAULT);
+        event.setResult(cutoff>score? Event.Result.DENY: Event.Result.DEFAULT);
     }
     private static void growthCutoffFull(BlockEvent.CropGrowEvent event, int cutoff, int score){
-        event.setResult(cutoff<score? Event.Result.DENY: Event.Result.ALLOW);
+        event.setResult(cutoff>score? Event.Result.DENY: Event.Result.ALLOW);
     }
     private static void addGrowth(BlockEvent.CropGrowEvent event, int[] chances, int[] counts, int score, TriConsumer<BlockState,BlockPos,ServerLevel> func){
         if(Helper.chance(chances,score)){
@@ -105,5 +116,6 @@ public class BlockGrowthEventHandler {
                 func.accept(event.getState());
             }
         }
+        event.setResult(Event.Result.DENY);
     }
 }
