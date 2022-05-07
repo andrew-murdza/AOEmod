@@ -26,7 +26,7 @@ public abstract class SpruceFoliageMixin extends FoliagePlacer {
 //        return value+5;
 //    }
     @Inject(method="createFoliage",at=@At("HEAD"),cancellable = true)
-    protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliagePlacer.FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset,CallbackInfo info) {
+    protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset,CallbackInfo info) {
         BlockPos blockpos = pAttachment.pos();
         int i = pRandom.nextInt(2);
         int j = 1;

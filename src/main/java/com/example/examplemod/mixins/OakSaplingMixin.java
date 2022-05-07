@@ -28,12 +28,12 @@ public abstract class OakSaplingMixin extends AbstractTreeGrowerMixin {
         int score= BiomeScores.getScoreBlock(pLevel,pPos, Blocks.OAK_SAPLING);
         if (Helper.chance(new int[]{0,0,10,5,2},score)) {
             if(score>=4){
-                //return JungleTreesFeature.LARGE_OAK_TREE;
+                return JungleTreesFeature.LARGE_OAK_TREE;
             }
             return b ? TreeFeatures.FANCY_OAK_BEES_005 : TreeFeatures.FANCY_OAK;
         } else {
             if(score>=4){
-                //return JungleTreesFeature.OAK_TREE;
+                return JungleTreesFeature.OAK_TREE;
             }
             return b ? TreeFeatures.OAK_BEES_005 : TreeFeatures.OAK;
         }
