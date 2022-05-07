@@ -2,7 +2,7 @@ package com.example.examplemod.mixins;
 
 import com.example.examplemod.BiomeScores;
 import com.example.examplemod.Helper;
-//import com.example.examplemod.features.AOEConfiguredFeatures;
+import com.example.examplemod.features.AOEConfiguredFeatures;
 import com.example.examplemod.features.JungleTreesFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.features.TreeFeatures;

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:glow_lichen",
+        "Properties": {
+          "down": "true",
+          "east": "false",
+          "north": "false",
+          "south": "false",
+          "up": "false",
+          "waterlogged": "false",
+          "west": "false"
+        }
+      }
+    }
+  }
+}
