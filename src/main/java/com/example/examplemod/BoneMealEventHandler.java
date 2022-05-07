@@ -1,6 +1,6 @@
 package com.example.examplemod;
 
-import com.example.examplemod.features.AOEConfiguredFeatures;
+//import com.example.examplemod.features.AOEConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -114,14 +114,14 @@ public class BoneMealEventHandler {
             flag=growNetherWart(pos,world);
         }
         else if(BlockTags.CORALS.contains(block)){
-            int type=world.random.nextInt(3);
-            ConfiguredFeature feature= AOEConfiguredFeatures.coralClawFeatures.get(block).configured(FeatureConfiguration.NONE);
-            if(type==1){
-                feature= AOEConfiguredFeatures.coralMushroomFeatures.get(block).configured(FeatureConfiguration.NONE);
-            }
-            else if(type==2){
-                feature= AOEConfiguredFeatures.coralTreeFeatures.get(block).configured(FeatureConfiguration.NONE);
-            } feature.place((WorldGenLevel) world,((ServerLevel)world).getChunkSource().getGenerator(), world.random,pos);
+//            int type=world.random.nextInt(3);
+//            ConfiguredFeature feature= AOEConfiguredFeatures.coralClawFeatures.get(block).configured(FeatureConfiguration.NONE);
+//            if(type==1){
+//                feature= AOEConfiguredFeatures.coralMushroomFeatures.get(block).configured(FeatureConfiguration.NONE);
+//            }
+//            else if(type==2){
+//                feature= AOEConfiguredFeatures.coralTreeFeatures.get(block).configured(FeatureConfiguration.NONE);
+//            } feature.place((WorldGenLevel) world,((ServerLevel)world).getChunkSource().getGenerator(), world.random,pos);
         }
         else if(block==Blocks.GRASS_BLOCK&&score(block,event)>0){
             ((GrassBlock)block).performBonemeal((ServerLevel) world,world.random,pos,Blocks.GRASS.defaultBlockState());//pState not used

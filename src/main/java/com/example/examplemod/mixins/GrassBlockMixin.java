@@ -1,7 +1,7 @@
 package com.example.examplemod.mixins;
 
 import com.example.examplemod.BiomeScores;
-import com.example.examplemod.features.AOEConfiguredFeatures;
+//import com.example.examplemod.features.AOEConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
@@ -49,12 +49,12 @@ public abstract class GrassBlockMixin extends SpreadableBlockMixin {
                     target = "Lnet/minecraft/data/worldgen/placement/VegetationPlacements;GRASS_BONEMEAL:Lnet/minecraft/world/level/levelgen/placement/PlacedFeature;",opcode = Opcodes.GETSTATIC))
     private PlacedFeature getGrass(ServerLevel level, Random random, BlockPos pos, BlockState state){
         Biome.BiomeCategory category=level.getBiome(pos).getBiomeCategory();
-        if(BiomeScores.isTropical(category)){
-            return AOEConfiguredFeatures.tropicalGrass;
-        }
-        else if(BiomeScores.isMountains(category)){
-            return AOEConfiguredFeatures.mountainsGrass;
-        }
+//        if(BiomeScores.isTropical(category)){
+//            return AOEConfiguredFeatures.tropicalGrass;
+//        }
+//        else if(BiomeScores.isMountains(category)){
+//            return AOEConfiguredFeatures.mountainsGrass;
+//        }
         return VegetationPlacements.GRASS_BONEMEAL;
     }
 }
