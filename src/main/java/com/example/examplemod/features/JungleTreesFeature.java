@@ -70,7 +70,7 @@ public class JungleTreesFeature {
     public static PlacedFeature JUNGLE_TREES_PLACED;
     public static void setup(FMLCommonSetupEvent event){
         BEES_005 = new BeehiveDecorator(0.05f);
-        CAVE_VINES=new BeehiveDecorator(0.00002f);//new CaveVinesFeature();
+        CAVE_VINES=new CaveVinesFeature();//new BeehiveDecorator(0.00002f);
         SPORE_BLOSSOM=new BeehiveDecorator(0.00002f);//new SporeBlossomDecorator(0.01F);
         trunkVines = TrunkVineDecorator.INSTANCE;
         leafVines = LeaveVineDecorator.INSTANCE;

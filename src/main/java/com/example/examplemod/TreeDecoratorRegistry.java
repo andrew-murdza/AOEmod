@@ -5,6 +5,7 @@ import com.example.examplemod.features.CaveVinesFeature;
 import com.example.examplemod.features.SporeBlossomDecorator;
 import com.example.examplemod.mixins.TreeDecoratedAccessor;
 import com.mojang.serialization.Codec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraftforge.event.RegistryEvent;
@@ -35,7 +36,7 @@ public class TreeDecoratorRegistry {
         register("spore_blossom",registry, SporeBlossomDecorator.type);
     }
     public static void register(String name,IForgeRegistry registry, TreeDecoratorType decoratorType){
-        decoratorType.setRegistryName("aoemod:"+name);
+        decoratorType.setRegistryName(new ResourceLocation("aoemod", name));
         registry.register(decoratorType);
     }
 

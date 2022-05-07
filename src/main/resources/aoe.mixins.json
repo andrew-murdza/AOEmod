@@ -42,6 +42,7 @@
     "SpreadableBlockMixin",
     "SpruceFoliageMixin",
     "SweetBerriesMixin",
+    "ToStringMixin",
     "TreeDecoratedAccessor",
     "TreeFeatureMixin",
     "TurtleEggMixin"

@@ -14,20 +14,14 @@ public abstract class ParrotMixin extends Animal {
     protected ParrotMixin(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
     }
-    /**
-     * @author
-     */
-    @Overwrite
+    @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob p_148994_) {
         Parrot parrot=EntityType.PARROT.create(world);
         parrot.setVariant(random.nextInt(5));
         return  parrot;
     }
 
-    /**
-     * @author
-     */
-    @Overwrite
+    @Override
     public boolean canMate(Animal other){
         return other!=this&&other.getClass()==Parrot.class&&isInLove()&&other.isInLove();
     }
