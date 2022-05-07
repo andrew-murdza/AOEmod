@@ -37,9 +37,9 @@ public class TurtleEggMixin {
         return state.is(Blocks.GRASS_BLOCK)||state.is(Blocks.MOSS_BLOCK)||state.is(BlockTags.SAND);
     }
 
-    @Redirect(method = "stepOn",
+    @Redirect(method = "destroyEgg",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/TurtleEggBlock;destroyEgg(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;I)V"))
-    private void protectEgg(TurtleEggBlock instance, Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, int pChance){}
+                    target = "Lnet/minecraft/world/level/block/TurtleEggBlock;canDestroyEgg(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;)Z"))
+    private boolean protectEgg(TurtleEggBlock instance, Level pLevel, Entity pEntity){return false;}
 
 }

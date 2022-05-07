@@ -1,5 +1,9 @@
 package com.example.examplemod;
 
+import com.example.examplemod.features.JungleTreesFeature;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Wolf;
@@ -43,6 +47,7 @@ public class ExampleMod
     private void setup(final FMLCommonSetupEvent event)
     {
         SpawnConditionsEventHandler.updateSpawnConditions(event);
+        registerConfiguredFeatures(event);
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
@@ -77,5 +82,9 @@ public class ExampleMod
             // register a new block here
             LOGGER.info("HELLO from Register Block");
         }
+    }
+    private static void registerConfiguredFeatures(FMLCommonSetupEvent event) {
+        event.enqueueWork(()->
+            JungleTreesFeature.setup(event));
     }
 }

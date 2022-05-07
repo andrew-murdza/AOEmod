@@ -1,27 +1,63 @@
 package com.example.examplemod;
 
+import com.example.examplemod.features.AOEConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SmallDripleafBlock;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = "aoemod", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BoneMealEventHandler {
+
+    static RandomCollection<BiFunction<Level,BlockPos,Boolean>> mossPlants=new RandomCollection<>();
+    private static BiFunction<Level,BlockPos,Boolean> placeBlock(BlockState state){
+        return (world,pos)->world.setBlockAndUpdate(pos,state);
+    }
+    private static BiFunction<Level,BlockPos,Boolean> placeDoubleBlock(Block block){
+        return (world,pos)->{DoublePlantBlock.placeAt(world, block.defaultBlockState(), pos, 2);return true;};
+    }
+    private static BiFunction<Level,BlockPos,Boolean> placeBlock(Block block){
+        return placeBlock(block.defaultBlockState());
+    }
+    static {
+        mossPlants.add(1,placeBlock(Blocks.RED_MUSHROOM));
+        mossPlants.add(1,placeBlock(Blocks.BROWN_MUSHROOM));
+        Block[] flowers=new Block[]{Blocks.POPPY,Blocks.DANDELION,Blocks.CORNFLOWER,Blocks.BLUE_ORCHID,
+        Blocks.AZURE_BLUET,Blocks.WHITE_TULIP,Blocks.PINK_TULIP,Blocks.ORANGE_TULIP,Blocks.RED_TULIP,
+                Blocks.OXEYE_DAISY,Blocks.LILY_OF_THE_VALLEY,Blocks.ALLIUM};
+        for(Block flower: flowers){
+            mossPlants.add(1,placeBlock(flower));
+        }
+        mossPlants.add(100,placeBlock(Blocks.GRASS));
+        mossPlants.add(20,placeBlock(Blocks.FERN));
+        mossPlants.add(0.3,placeBlock(Blocks.DEAD_BUSH));
+        mossPlants.add(1,BoneMealEventHandler::createDripLeaf);
+        mossPlants.add(6,placeBlock(Blocks.AZALEA));
+        mossPlants.add(2,placeBlock(Blocks.FLOWERING_AZALEA));
+        mossPlants.add(20,placeDoubleBlock(Blocks.LARGE_FERN));
+        mossPlants.add(20,placeDoubleBlock(Blocks.TALL_GRASS));
+        mossPlants.add(1,placeDoubleBlock(Blocks.SUNFLOWER));
+        mossPlants.add(1,placeDoubleBlock(Blocks.LILAC));
+        mossPlants.add(1,placeDoubleBlock(Blocks.ROSE_BUSH));
+        mossPlants.add(1,placeDoubleBlock(Blocks.PEONY));
+    }
 
     @SubscribeEvent
     public static void boneMealEvent(BonemealEvent event){
@@ -31,6 +67,9 @@ public class BoneMealEventHandler {
         if(Helper.cancelBlock(block,BiomeScores.getScoreBlock(world,pos,block))){
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
+            return;
+        }
+        if(!(world instanceof ServerLevel)){
             return;
         }
         Block aboveState=world.getBlockState(pos.above()).getBlock();
@@ -52,6 +91,10 @@ public class BoneMealEventHandler {
         else if(!belowWater&&(block==Blocks.MYCELIUM)&&score(Blocks.RED_MUSHROOM,event)>2){
             growMycelium(world,pos);
         }
+        else if(block==Blocks.MOSS_BLOCK&&score(block,event)>3){
+            Function<BlockPos,Boolean> func=(pos1)->mossPlants.next(world.random).apply(world,pos1);
+            placeBoneMeal(world,pos,blockState->blockState.is(Blocks.MOSS_BLOCK),128,func);
+        }
         else if(BlockTags.FLOWERS.contains(block)){
             boolean flag1=false;
             int score=score(Blocks.ALLIUM,event);
@@ -69,6 +112,19 @@ public class BoneMealEventHandler {
         }
         else if(block==Blocks.NETHER_WART&&score(block,event)>2){
             flag=growNetherWart(pos,world);
+        }
+        else if(BlockTags.CORALS.contains(block)){
+            int type=world.random.nextInt(3);
+            ConfiguredFeature feature= AOEConfiguredFeatures.coralClawFeatures.get(block).configured(FeatureConfiguration.NONE);
+            if(type==1){
+                feature= AOEConfiguredFeatures.coralMushroomFeatures.get(block).configured(FeatureConfiguration.NONE);
+            }
+            else if(type==2){
+                feature= AOEConfiguredFeatures.coralTreeFeatures.get(block).configured(FeatureConfiguration.NONE);
+            } feature.place((WorldGenLevel) world,((ServerLevel)world).getChunkSource().getGenerator(), world.random,pos);
+        }
+        else if(block==Blocks.GRASS_BLOCK&&score(block,event)>0){
+            ((GrassBlock)block).performBonemeal((ServerLevel) world,world.random,pos,Blocks.GRASS.defaultBlockState());//pState not used
         }
         else{
             flag=false;

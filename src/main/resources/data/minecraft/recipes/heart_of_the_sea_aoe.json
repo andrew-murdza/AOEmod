@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:axolotl_bucket"
+    },
+    {
+      "item": "minecraft:cod_bucket"
+    },
+    {
+      "item": "minecraft:salmon_bucket"
+    },
+    {
+      "item": "minecraft:pufferfish_bucket"
+    },
+    {
+      "item": "minecraft:tropical_fish_bucket"
+    },
+    {
+      "item": "minecraft:scute"
+    },
+    {
+      "item": "minecraft:scute"
+    },
+    {
+      "item": "minecraft:scute"
+    },
+    {
+      "item": "minecraft:scute"
+    }
+  ],
+  "result": {
+    "item": "minecraft:heart_of_the_sea",
+    "count": 1
+  }
+}

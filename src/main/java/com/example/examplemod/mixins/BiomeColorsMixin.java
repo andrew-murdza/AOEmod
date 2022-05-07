@@ -13,11 +13,11 @@ public class BiomeColorsMixin {
     @Shadow Biome.BiomeCategory biomeCategory;
     @Inject(method = "getGrassColor",at=@At("RETURN"),cancellable = true)
     private void getDefaultGrassColor(CallbackInfoReturnable<Integer> info){
-        info.setReturnValue(convolve(info.getReturnValue(), BiomeScores.isTropical(biomeCategory)));
+        //info.setReturnValue(convolve(info.getReturnValue(), BiomeScores.isTropical(biomeCategory)));
     }
     @Inject(method = "getFoliageColor",at=@At("RETURN"),cancellable = true)
     private void getFoliageColor(CallbackInfoReturnable<Integer> info){
-        info.setReturnValue(convolve(info.getReturnValue(),BiomeScores.isTropical(biomeCategory)));
+        //info.setReturnValue(convolve(info.getReturnValue(),BiomeScores.isTropical(biomeCategory)));
     }
     private int convolve(int color,boolean tropical){
         double[] colorMatrix=new double[] {

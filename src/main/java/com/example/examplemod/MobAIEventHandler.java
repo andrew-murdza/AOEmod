@@ -16,12 +16,16 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = "aoemod", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MobAIEventHandler {
+
+    public static Field getTargetType;
 
     @SubscribeEvent
     public static void AIChanges(EntityJoinWorldEvent event){
@@ -30,10 +34,10 @@ public class MobAIEventHandler {
 
             if(!event.getWorld().isClientSide&&entity instanceof PathfinderMob) {
                 PathfinderMob mob = (PathfinderMob) entity;
-                if(mob.getTags().contains("aoe.checkedAI")){
-                    return;
-                }
-                mob.addTag("aoe.checkedAI");
+//                if(mob.getTags().contains("aoe.checkedAI")){
+//                    return;
+//                }
+//                mob.addTag("aoe.checkedAI");
 
                 if (entity instanceof Wolf) {
                     removeAI(mob, NonTameRandomTargetGoal.class);
@@ -44,7 +48,7 @@ public class MobAIEventHandler {
                     addTempt(mob, Items.SALMON, Items.COD, Items.TROPICAL_FISH);
                 }
                 //Goat Ramming requires brain
-                //Axotol hunting passive fish uses brain
+                //Axotol hunting passive fish will be fixed with the datapack
                 //Piglin brute not attacking players with gold armor requires brain
                 else if (entity instanceof Rabbit) {
                     removeAI(mob,Class.forName("net.minecraft.world.entity.animal.Rabbit$RabbitAvoidEntityGoal"));
@@ -70,17 +74,43 @@ public class MobAIEventHandler {
                 //parrot breeding
                 else if (entity instanceof MushroomCow) {
                     addTempt(mob, Items.BROWN_MUSHROOM, Items.RED_MUSHROOM);
-                } else if (entity instanceof AbstractSkeleton || entity instanceof Zombie) {
-                    NearestAttackableTargetGoal<Turtle> babyTurtleAttack = new NearestAttackableTargetGoal<>(mob, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR);
-                    removeAI(p -> p.equals(babyTurtleAttack), mob);
-                } else if (entity instanceof Zombie) {
+                }
+                else if (entity instanceof Zombie) {
                     removeAI(mob, Class.forName("net.minecraft.world.entity.monster.Zombie$ZombieAttackTurtleEggGoal"));
+                    removeAI(MobAIEventHandler::removeTurtleAttack,mob);
+                }
+                else if(entity instanceof AbstractSkeleton){
+                    removeAI(MobAIEventHandler::removeTurtleAttack,mob);
+                }
+                else if(entity instanceof Bee){
+                    removeAI(p->true,mob.targetSelector);
                 }
             }
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    static {
+
+        try {
+            getTargetType=NearestAttackableTargetGoal.class.getDeclaredField("targetType");
+            getTargetType.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean removeTurtleAttack(Goal goal) {
+        if(goal instanceof NearestAttackableTargetGoal){
+            try {
+                return getTargetType.get(goal)==Turtle.class;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     private static void addBreeding(PathfinderMob mob) {

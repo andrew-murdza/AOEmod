@@ -8,6 +8,7 @@ import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -278,6 +279,13 @@ public class BiomeScores {
         }
         return 1;
     }
+    public static int getScoreBlock1(WorldGenLevel world, BlockPos pos, Block block) {
+        Biome.BiomeCategory category=getCategory(world,pos);
+        if (BIOME_SCORES_MAP.containsKey(block)&&BIOME_SCORES_MAP.get(block).containsKey(category)) {
+            return BIOME_SCORES_MAP.get(block).get(category);
+        }
+        return 1;
+    }
     private static Biome.BiomeCategory getCategory(LevelAccessor world, BlockPos pos){
         return world.getBiome(pos).getBiomeCategory();
     }
@@ -286,6 +294,9 @@ public class BiomeScores {
     }
     public static boolean isTropical(Biome.BiomeCategory category){
         return Helper.contains(category, Biome.BiomeCategory.JUNGLE, Biome.BiomeCategory.OCEAN, Biome.BiomeCategory.MUSHROOM);
+    }
+    public static boolean isMountains(Biome.BiomeCategory category){
+        return Helper.contains(category, Biome.BiomeCategory.MOUNTAIN,Biome.BiomeCategory.ICY,Biome.BiomeCategory.TAIGA);
     }
     public static boolean isMountains(LevelAccessor world, BlockPos pos){
         return isType(world,pos,Biome.BiomeCategory.MOUNTAIN,Biome.BiomeCategory.ICY,Biome.BiomeCategory.TAIGA);

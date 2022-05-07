@@ -1,5 +1,5 @@
 {
-  "feature": "minecraft:oak",
+  "feature": "aoemod:mushroom_patch_feature",
   "placement": [
     {
       "type": "minecraft:count",
@@ -9,8 +9,11 @@
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:heightmap",
-      "heightmap": "OCEAN_FLOOR"
+      "heightmap": "MOTION_BLOCKING",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

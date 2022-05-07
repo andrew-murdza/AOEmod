@@ -1,0 +1,17 @@
+{
+  "config": {
+    "features": [
+
+      {
+        "feature": "aoemod:brown_mushroom_normal",
+        "chance": 0.5
+      },
+      {
+        "feature": "minecraft:birch_checked",
+        "chance": 0.5
+      }
+    ],
+    "default": "minecraft:oak_checked"
+  },
+  "type": "minecraft:random_selector"
+}

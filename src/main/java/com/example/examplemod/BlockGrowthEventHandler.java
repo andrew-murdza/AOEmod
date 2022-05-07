@@ -88,7 +88,8 @@ public class BlockGrowthEventHandler {
         if(state.is(Blocks.CACTUS)||state.is(Blocks.SUGAR_CANE)){
             addGrowth(event,new int[]{0,0,3,2,1},new int[]{0,0,1,1,1},score,p->Helper.cycleAge(p,BlockStateProperties.AGE_15));
         }
-        if(state.is(Blocks.CAVE_VINES)){
+        else if(state.is(Blocks.CAVE_VINES)){
+            world.setBlock(pos.above(),Blocks.CAVE_VINES_PLANT.defaultBlockState().setValue(CaveVines.BERRIES,true),3);
             world.setBlock(pos,Blocks.CAVE_VINES.defaultBlockState().setValue(CaveVines.BERRIES,true),3);
         }
     }
