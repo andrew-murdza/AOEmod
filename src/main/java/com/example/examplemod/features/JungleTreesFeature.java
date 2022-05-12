@@ -68,9 +68,16 @@ public class JungleTreesFeature {
     public static PlacedFeature BIRCH_TREE_PLACED;
     public static PlacedFeature GIANT_JUNGLE_TREE_PLACED;
     public static PlacedFeature JUNGLE_TREES_PLACED;
+    public static ConfiguredFeature SPRUCE_TREE;
+    public static ConfiguredFeature GIANT_SPRUCE_TREE;
+    public static ConfiguredFeature GIANT_PINE_TREE;
+    public static PlacedFeature SPRUCE_TREE_PLACED;
+    public static PlacedFeature GIANT_SPRUCE_TREE_PLACED;
+    public static PlacedFeature GIANT_PINE_TREE_PLACED;
+
     public static void setup(FMLCommonSetupEvent event){
         BEES_005 = new BeehiveDecorator(0.05f);
-        CAVE_VINES=new CaveVinesFeature();//new BeehiveDecorator(0.00002f);
+        CAVE_VINES=new BeehiveDecorator(0.00002f);//new CaveVinesFeature();
         SPORE_BLOSSOM=new BeehiveDecorator(0.00002f);//new SporeBlossomDecorator(0.01F);
         trunkVines = TrunkVineDecorator.INSTANCE;
         leafVines = LeaveVineDecorator.INSTANCE;
@@ -82,6 +89,9 @@ public class JungleTreesFeature {
         OAK_TREE=createOakTree();
         LARGE_OAK_TREE=createFancyOak();
         GIANT_JUNGLE_TREE=createGiantJungleTree();
+        SPRUCE_TREE=createSpruceTree();
+        GIANT_SPRUCE_TREE=createMegaSpruceTree(false);
+        GIANT_PINE_TREE=createMegaSpruceTree(true);
 
         JUNGLE_TREE_PLACED=createTreePlaced(JUNGLE_TREE);
         DARK_OAK_TREE_PLACED=createTreePlaced(DARK_OAK_TREE);
@@ -90,6 +100,9 @@ public class JungleTreesFeature {
         ACACIA_TREE_PLACED=createTreePlaced(ACACIA_TREE);
         BIRCH_TREE_PLACED=createTreePlaced(BIRCH_TREE);
         GIANT_JUNGLE_TREE_PLACED=createTreePlaced(GIANT_JUNGLE_TREE);
+        SPRUCE_TREE_PLACED=createTreePlaced(ACACIA_TREE);
+        GIANT_SPRUCE_TREE_PLACED=createTreePlaced(BIRCH_TREE);
+        GIANT_PINE_TREE_PLACED=createTreePlaced(GIANT_JUNGLE_TREE);
 
         System.out.println("this ran!!!!!!");
         ConfiguredFeature[] features=new ConfiguredFeature[]{JUNGLE_TREE,DARK_OAK_TREE,LARGE_OAK_TREE,ACACIA_TREE,
@@ -103,9 +116,10 @@ public class JungleTreesFeature {
         add(ACACIA_TREE_PLACED,0.03F);
         add(BIRCH_TREE_PLACED,0.02F);
         add(GIANT_JUNGLE_TREE_PLACED,0.3F);
-        add(TreePlacements.MEGA_SPRUCE_CHECKED,0.05F);
-        add(TreePlacements.MEGA_PINE_CHECKED,0.05F);
-        add(TreePlacements.SPRUCE_CHECKED,0.01F);
+        add(GIANT_PINE_TREE_PLACED,0.05F);
+        add(GIANT_SPRUCE_TREE_PLACED,0.05F);
+        add(SPRUCE_TREE_PLACED,0.01F);
+        add(JUNGLE_TREE_PLACED,0.09F);
         List<PlacementModifier> modifier0= VegetationPlacements.treePlacement(PlacementUtils.countExtra(2, 0.1f, 1));
         String[] featureNames=new String[]{"jungle_tree","dark_oak","large_oak","acacia","birch","giant_jungle_tree"};
 //        for(int i=0;i<featureNames.length;i++){
@@ -117,7 +131,7 @@ public class JungleTreesFeature {
         }
         JUNGLE_TREES= JUNGLE_TREE;//AOEConfiguredFeatures.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(entries, JUNGLE_TREE_PLACED));
         JUNGLE_TREES_PLACED=JUNGLE_TREES.placed(modifier0);
-        registerPlaced("tropical_trees",JUNGLE_TREES_PLACED);
+        //registerPlaced("tropical_trees",JUNGLE_TREES_PLACED);
         System.out.println("this ran postregister");
         //JUNGLE_TREE_PLACED= JUNGLE_TREE.placed(VegetationPlacements.treePlacement(PlacementUtils.countExtra(2, 0.1F, 1)));
     }
@@ -161,6 +175,24 @@ public class JungleTreesFeature {
         FeatureSize layers = new TwoLayersFeatureSize(1, 1, 2);
         TreeConfiguration.TreeConfigurationBuilder tree=builder(Blocks.JUNGLE_LOG,Blocks.JUNGLE_LEAVES,trunk,foliage,layers);
         ImmutableList<TreeDecorator> decorators = ImmutableList.of(SPORE_BLOSSOM,CAVE_VINES,trunkVines,leafVines);
+        return createTree(tree,decorators);
+    }
+
+    private static ConfiguredFeature createSpruceTree(){
+        TrunkPlacer trunk=new StraightTrunkPlacer(5,2,1);
+        SpruceFoliagePlacer leaves = new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2));
+        FeatureSize layers = new TwoLayersFeatureSize(2, 0, 2);
+        TreeConfiguration.TreeConfigurationBuilder tree=builder(Blocks.ACACIA_LOG,Blocks.ACACIA_LEAVES,trunk,leaves,layers);
+        ImmutableList<TreeDecorator> decorators = ImmutableList.of(SPORE_BLOSSOM,CAVE_VINES);
+        return createTree(tree,decorators);
+    }
+
+    private static ConfiguredFeature createMegaSpruceTree(boolean pine){
+        TrunkPlacer trunk=new GiantTrunkPlacer(13, 2, 14);
+        MegaPineFoliagePlacer leaves = new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(pine?3:13, pine?7:17));
+        FeatureSize layers = new TwoLayersFeatureSize(1, 1, 2);
+        TreeConfiguration.TreeConfigurationBuilder tree=builder(Blocks.SPRUCE_LOG,Blocks.SPRUCE_LEAVES,trunk,leaves,layers);
+        ImmutableList<TreeDecorator> decorators = ImmutableList.of(SPORE_BLOSSOM,CAVE_VINES);
         return createTree(tree,decorators);
     }
 

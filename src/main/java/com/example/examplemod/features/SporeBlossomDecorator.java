@@ -37,8 +37,8 @@ public class SporeBlossomDecorator extends TreeDecorator {
     }
 
     private float chance;
-    public SporeBlossomDecorator(float chance) {
-        this.chance=chance;
+    public SporeBlossomDecorator() {
+        this.chance=0.01f;
     }
 
     private void generateSporeBlossom(BlockPos pos, LevelSimulatedReader world, Random random, BiConsumer<BlockPos, BlockState> replacer) {

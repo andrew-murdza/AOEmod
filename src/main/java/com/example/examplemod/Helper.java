@@ -24,11 +24,34 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.eventbus.api.Event;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Helper {
     public static Random random=new Random();
+
+    public static List<Block> smallFlowers;
+    public static List<Block> tallFlowers;
+    public static List<Block> coralPlants;
+    public static List<Block> coralFans;
+    public static List<Block> coralPlantsAndFans;
+    static {
+        smallFlowers=Arrays.asList(Blocks.POPPY,Blocks.DANDELION,Blocks.AZURE_BLUET,Blocks.CORNFLOWER,
+                Blocks.OXEYE_DAISY,Blocks.ALLIUM,Blocks.BLUE_ORCHID,Blocks.LILY_OF_THE_VALLEY,Blocks.RED_TULIP,
+                Blocks.WHITE_TULIP,Blocks.PINK_TULIP,Blocks.ORANGE_TULIP);
+
+        tallFlowers=Arrays.asList(Blocks.SUNFLOWER,Blocks.ROSE_BUSH,Blocks.PEONY,Blocks.LILAC);
+
+        coralPlants=Arrays.asList(Blocks.FIRE_CORAL,Blocks.HORN_CORAL,Blocks.BUBBLE_CORAL,
+                Blocks.BRAIN_CORAL,Blocks.TUBE_CORAL);
+        coralFans=Arrays.asList(Blocks.FIRE_CORAL_FAN,Blocks.HORN_CORAL_FAN,Blocks.BUBBLE_CORAL_FAN,
+                Blocks.BRAIN_CORAL_FAN,Blocks.TUBE_CORAL_FAN);
+        coralPlantsAndFans=new ArrayList<>(coralPlants);
+        coralPlantsAndFans.addAll(coralFans);
+    }
+
     private static void dropItemStack(Level world, BlockPos pos, ItemStack stack){
         double vx=world.random.nextDouble() * 0.2D - 0.1D;
         double vy=0.2D;

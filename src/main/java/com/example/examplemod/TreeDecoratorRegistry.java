@@ -26,7 +26,7 @@ public class TreeDecoratorRegistry {
         CaveVinesFeature.CODEC= Codec.unit(() -> caveVines);
         CaveVinesFeature.type=(TreeDecoratorType<CaveVinesFeature>) TreeDecoratedAccessor.createType(CaveVinesFeature.CODEC);
 
-        SporeBlossomDecorator sporeBlossomDecorator=new SporeBlossomDecorator(0.01F);
+        SporeBlossomDecorator sporeBlossomDecorator=new SporeBlossomDecorator();
         SporeBlossomDecorator.CODEC= Codec.unit(() -> sporeBlossomDecorator);
         SporeBlossomDecorator.type=(TreeDecoratorType<SporeBlossomDecorator>) TreeDecoratedAccessor.createType(SporeBlossomDecorator.CODEC);
 

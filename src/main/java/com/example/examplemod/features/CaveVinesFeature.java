@@ -26,12 +26,6 @@ public class CaveVinesFeature extends TreeDecorator {
     public static TreeDecoratorType<CaveVinesFeature> type;
     public static float chance=1.0F;
     public static float maxPercent=100F;//0.01F;
-//    static{
-//        //Function<Random,Integer> height=(random)->random.nextInt(3)+1;
-//        CaveVinesFeature caveVines=new CaveVinesFeature();
-//        CODEC=Codec.unit(() -> caveVines);
-//        type=(TreeDecoratorType<CaveVinesFeature>) TreeDecoratedAccessor.createType(CODEC);
-//    }
     //private float chance;
     private int minAge;
     private int maxAge;

@@ -1,14 +1,19 @@
 package com.example.examplemod.features;
 
+import com.example.examplemod.Helper;
 import com.example.examplemod.RandomSelectionFeature;
 import com.example.examplemod.features.AOECoralClawFeature;
 import com.example.examplemod.features.AOECoralMushroomFeature;
 import com.example.examplemod.features.AOECoralTreeFeature;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
@@ -17,10 +22,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class AOEConfiguredFeatures {
@@ -32,10 +34,36 @@ public class AOEConfiguredFeatures {
     public static PlacedFeature giantCoralPlants;
     public static PlacedFeature tropicalGrass;
     public static PlacedFeature mountainsGrass;
+    public static HashMap<Block,ConfiguredFeature> simpleBlockPlacers;
+    public static ConfiguredFeature[] netherWartFeatures;
+    public static ConfiguredFeature[] sugarCaneFeatures;
+    public static ConfiguredFeature[] cactusFeatures;
 
     public static Feature RANDOM_SELECTOR=new RandomSelectionFeature(RandomFeatureConfiguration.CODEC);
 
     public static void update() {
+        List<Block> simpleBlocks= Arrays.asList(Blocks.RED_MUSHROOM,Blocks.BROWN_MUSHROOM,Blocks.CRIMSON_FUNGUS,Blocks.WARPED_FUNGUS,
+                Blocks.CRIMSON_ROOTS,Blocks.WARPED_ROOTS,Blocks.NETHER_SPROUTS,Blocks.DEAD_BUSH,Blocks.FERN,
+                Blocks.LARGE_FERN,Blocks.GRASS,Blocks.TALL_GRASS,Blocks.SEAGRASS,Blocks.TALL_SEAGRASS,
+                Blocks.FLOWERING_AZALEA,Blocks.AZALEA,Blocks.WITHER_ROSE,Blocks.NETHER_SPROUTS);
+        simpleBlocks.addAll(Helper.smallFlowers);
+        simpleBlocks.addAll(Helper.coralPlantsAndFans);
+        for(Block block: simpleBlocks){
+            addBlockPlacer(block);
+        }
+        addBlockPlacer(Blocks.SWEET_BERRY_BUSH.defaultBlockState().setValue(BlockStateProperties.AGE_3,3));
+        addBlockPlacer(Blocks.SEA_PICKLE.defaultBlockState().setValue(BlockStateProperties.PICKLES,4));
+        addBlockPlacer(Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.DOWN,true));
+        for(int i=0;i<4;i++){
+            netherWartFeatures[i]=createSimpleBlock(Blocks.NETHER_WART.defaultBlockState().setValue(BlockStateProperties.AGE_3,i));
+        }
+        for(int i=0;i<3;i++){
+            sugarCaneFeatures[i]=createSimpleBlockColumn(Blocks.SUGAR_CANE,i);
+            sugarCaneFeatures[i]=createSimpleBlockColumn(Blocks.CACTUS,i);
+        }
+
+
+
         coralTreeFeatures.put(Blocks.TUBE_CORAL,new AOECoralTreeFeature(NoneFeatureConfiguration.CODEC,Blocks.TUBE_CORAL_BLOCK));
         coralTreeFeatures.put(Blocks.TUBE_CORAL_FAN,new AOECoralTreeFeature(NoneFeatureConfiguration.CODEC,Blocks.TUBE_CORAL_BLOCK));
         coralTreeFeatures.put(Blocks.HORN_CORAL,new AOECoralTreeFeature(NoneFeatureConfiguration.CODEC,Blocks.HORN_CORAL_BLOCK));
@@ -76,6 +104,21 @@ public class AOEConfiguredFeatures {
         tropicalGrass=createWeightedGrass(4,1);
         mountainsGrass=createWeightedGrass(1,3);
     }
+
+    public static void addBlockPlacer(Block block){
+        addBlockPlacer(block.defaultBlockState());
+    }
+    public static void addBlockPlacer(BlockState state){
+        simpleBlockPlacers.put(state.getBlock(),createSimpleBlock(state));
+    }
+    public static ConfiguredFeature createSimpleBlock(BlockState state){
+        return Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(state)));
+    }
+    public static ConfiguredFeature createSimpleBlockColumn(Block block,int height){
+        return Feature.BLOCK_COLUMN.configured(BlockColumnConfiguration.simple(ConstantInt.of(height),
+                BlockStateProvider.simple(block)));
+    }
+
 
     public static void updateFeatures(){
         update();
