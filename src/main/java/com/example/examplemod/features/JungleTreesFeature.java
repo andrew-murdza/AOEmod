@@ -131,9 +131,9 @@ public class JungleTreesFeature {
         }
         JUNGLE_TREES= JUNGLE_TREE;//AOEConfiguredFeatures.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(entries, JUNGLE_TREE_PLACED));
         JUNGLE_TREES_PLACED=JUNGLE_TREES.placed(modifier0);
-        //registerPlaced("tropical_trees",JUNGLE_TREES_PLACED);
+        registerPlaced("tropical_trees",JUNGLE_TREES_PLACED);
         System.out.println("this ran postregister");
-        //JUNGLE_TREE_PLACED= JUNGLE_TREE.placed(VegetationPlacements.treePlacement(PlacementUtils.countExtra(2, 0.1F, 1)));
+        JUNGLE_TREE_PLACED= JUNGLE_TREE.placed(VegetationPlacements.treePlacement(PlacementUtils.countExtra(2, 0.1F, 1)));
     }
 
     private static void add(PlacedFeature feature, float chance){

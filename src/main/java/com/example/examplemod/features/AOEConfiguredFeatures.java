@@ -34,18 +34,18 @@ public class AOEConfiguredFeatures {
     public static PlacedFeature giantCoralPlants;
     public static PlacedFeature tropicalGrass;
     public static PlacedFeature mountainsGrass;
-    public static HashMap<Block,ConfiguredFeature> simpleBlockPlacers;
-    public static ConfiguredFeature[] netherWartFeatures;
-    public static ConfiguredFeature[] sugarCaneFeatures;
-    public static ConfiguredFeature[] cactusFeatures;
+    public static HashMap<Block,ConfiguredFeature> simpleBlockPlacers=new HashMap<>();
+    public static ConfiguredFeature[] netherWartFeatures=new ConfiguredFeature[4];
+    public static ConfiguredFeature[] sugarCaneFeatures=new ConfiguredFeature[3];
+    public static ConfiguredFeature[] cactusFeatures=new ConfiguredFeature[3];
 
     public static Feature RANDOM_SELECTOR=new RandomSelectionFeature(RandomFeatureConfiguration.CODEC);
 
     public static void update() {
-        List<Block> simpleBlocks= Arrays.asList(Blocks.RED_MUSHROOM,Blocks.BROWN_MUSHROOM,Blocks.CRIMSON_FUNGUS,Blocks.WARPED_FUNGUS,
+        List<Block> simpleBlocks= new ArrayList<>(Arrays.asList(Blocks.RED_MUSHROOM,Blocks.BROWN_MUSHROOM,Blocks.CRIMSON_FUNGUS,Blocks.WARPED_FUNGUS,
                 Blocks.CRIMSON_ROOTS,Blocks.WARPED_ROOTS,Blocks.NETHER_SPROUTS,Blocks.DEAD_BUSH,Blocks.FERN,
                 Blocks.LARGE_FERN,Blocks.GRASS,Blocks.TALL_GRASS,Blocks.SEAGRASS,Blocks.TALL_SEAGRASS,
-                Blocks.FLOWERING_AZALEA,Blocks.AZALEA,Blocks.WITHER_ROSE,Blocks.NETHER_SPROUTS);
+                Blocks.FLOWERING_AZALEA,Blocks.AZALEA,Blocks.WITHER_ROSE,Blocks.NETHER_SPROUTS));
         simpleBlocks.addAll(Helper.smallFlowers);
         simpleBlocks.addAll(Helper.coralPlantsAndFans);
         for(Block block: simpleBlocks){
