@@ -28,6 +28,8 @@
     "HoglinZombificationMixin",
     "HugeMushroomMixin",
     "JungleSaplingMixin",
+    "LeavesLightMixin",
+    "LeavesLightMixinHelper",
     "MushroomMixin",
     "MyceliumMixin",
     "NyliumMixin",

@@ -36,7 +36,7 @@ public class BlockGrowthEventHandler {
         }
         if(state.is(Blocks.WHEAT)||state.is(Blocks.POTATOES)||state.is(Blocks.CARROTS)||state.is(Blocks.PUMPKIN_STEM)||state.is(Blocks.MELON_STEM)){
             BlockState farmland=world.getBlockState(pos.below());
-            if(farmland.is(Blocks.FARMLAND)|| state.getValue(FarmBlock.MOISTURE)==FarmBlock.MAX_MOISTURE){
+            if(farmland.is(Blocks.FARMLAND)&&farmland.getValue(FarmBlock.MOISTURE)==FarmBlock.MAX_MOISTURE){
                 checkGrowth(event,new int[]{0,6,3,2,1},score);
             }
             else{
